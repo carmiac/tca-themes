@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://tca.dev/schema/v1.0/pragmatic",
+  "$id": "https://terminalcolors.dev/schema/v1.0/pragmatic",
   "title": "Terminal Color Architecture (TCA) v1.0 Pragmatic Mode",
   "type": "object",
   "additionalProperties": false,
@@ -15,7 +15,8 @@
         "name": { "type": "string" },
         "slug": { "type": "string" },
         "author": { "type": "string" },
-        "version": { "type": "string" }
+        "version": { "type": "string" },
+        "description": { "type": "string" }
       }
     },
 
@@ -50,9 +51,22 @@
       "type": "object",
       "additionalProperties": false,
       "required": [
-        "black", "red", "green", "yellow", "blue", "magenta", "cyan", "white",
-        "brightBlack", "brightRed", "brightGreen", "brightYellow",
-        "brightBlue", "brightMagenta", "brightCyan", "brightWhite"
+        "black",
+        "red",
+        "green",
+        "yellow",
+        "blue",
+        "magenta",
+        "cyan",
+        "white",
+        "brightBlack",
+        "brightRed",
+        "brightGreen",
+        "brightYellow",
+        "brightBlue",
+        "brightMagenta",
+        "brightCyan",
+        "brightWhite"
       ],
       "properties": {
         "black": { "$ref": "#/$defs/paletteReference" },
@@ -128,4 +142,3 @@
     }
   }
 }
-

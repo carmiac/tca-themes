@@ -17,12 +17,13 @@ meta:
   description: "My favorite amazing theme."
 
 palette:
-  # Color ramps can have up to 5 colors, and can be sparse.
   # Tones in each ramp should go from darkest to lightest.
   neutral:
+    # The neutral ramp is required and must include all 5 tones.
     "1": "#000000"
-    "2": "#1a1a1a"
-    # ... your neutral ramp, must include 1-5
+    "2": "#6a6a6a"
+    "3": "#1a1a1a"
+    "4": "#bababa"
     "5": "#ffffff"
 
   # Additional color ramps (optional)
@@ -35,7 +36,7 @@ palette:
     "5": "#7fdbff"
 
 ansi:
-  black: "palette.neutral.0"
+  black: "palette.neutral.1"
   # ... your blue ramp
   blue: "palette.blue.5"
   # ... all 16 ANSI colors
@@ -49,17 +50,17 @@ semantic:
   link: "palette.blue.5"
 
 ui:
-  bg.primary: "$neutral.0"
-  bg.secondary: "$neutral.1"
-  fg.primary: "$neutral.5"
-  fg.secondary: "$neutral.4"
-  fg.muted: "$neutral.5"
-  border.primary: "$neutral.4"
-  border.muted: "$neutral.3"
-  cursor.primary: "$blue.5"
-  cursor.muted: "$neutral.3"
-  selection.bg: "$neutral.2"
-  selection.fg: "$neutral.5"
+  bg.primary: "palette.neutral.1"
+  bg.secondary: "palette.neutral.2"
+  fg.primary: "palette.neutral.5"
+  fg.secondary: "palette.neutral.4"
+  fg.muted: "palette.neutral.5"
+  border.primary: "palette.neutral.4"
+  border.muted: "palette.neutral.3"
+  cursor.primary: "palette.blue.5"
+  cursor.muted: "palette.neutral.3"
+  selection.bg: "palette.neutral.2"
+  selection.fg: "palette.neutral.5"
 ```
 
 ### 2. Validate Your Theme
@@ -77,6 +78,8 @@ tca validate your-theme.yaml
 The validator checks:
 
 - Schema compliance
+- Palette ramp keys are 1-5 only
+- No direct hex values in ansi/semantic/ui/base16
 - WCAG contrast ratios (for accessibility)
 - Valid color references
 - Required fields present
@@ -128,11 +131,28 @@ Themes are recommended to include:
 - **Theme name**: Human-readable (e.g., "Nord Dark")
 - **Slug**: Same as filename without extension (e.g., "nord-dark")
 
+### Color Palette Rules
+
+**IMPORTANT - These rules are strictly enforced:**
+
+1. **Ramp Keys Must Be 1-5**
+   - Valid: `"1"`, `"2"`, `"3"`, `"4"`, `"5"`
+   - Invalid: `"0"`, `"6"`, `"10"`, `"000"`-`"900"`
+   - Sparse ramps are allowed (e.g., just `"1"`, `"3"`, `"5"`)
+
+2. **Direct Hex ONLY in Palette Section**
+   - good: `palette.neutral.1: "#000000"`
+   - bad: `ansi.black: "#000000"` (must use `"palette.neutral.1"`)
+
+3. **All ansi/semantic/ui/base16 Must Reference Palette**
+   - Cannot use direct hex colors
+   - Must use format: `"palette.rampname.key"`
+
 ### Color Palette Tips
 
-1. **Neutral ramp**: Use 5 shades (1-5) from darkest to lightest
+1. **Neutral ramp**: Use 5 shades (1-5) from darkest to lightest, but sparse is OK
 2. **Contrast**: Ensure WCAG AA compliance (4.5:1 for normal text)
-3. **Consistency**: Use palette references (`$neutral.5`) for maintainability
+3. **Consistency**: Use palette references (`palette.neutral.3`) for maintainability
 4. **Accessibility**: Test with different vision modes
 
 ## Questions?

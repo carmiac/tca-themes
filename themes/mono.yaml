@@ -3,6 +3,7 @@ meta:
   slug: "mono"
   author: "TCA Project"
   version: "1.0.0"
+  description: "A basic monochromatic theme."
 
 palette:
   neutral:

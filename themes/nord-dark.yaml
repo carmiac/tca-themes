@@ -16,28 +16,32 @@ palette:
     "2": "#81a1c1"
     "3": "#88c0d0"
     "4": "#8fbcbb"
-  aurora:
-    "1": "#bf616a"
-    "2": "#d08770"
-    "3": "#ebcb8b"
-    "4": "#a3be8c"
-    "5": "#b48ead"
+  red:
+    "3": "#bf616a" # red
+  orange:
+    "3": "#d08770" # orange
+  yellow:
+    "3": "#ebcb8b" # yellow
+  green:
+    "3": "#a3be8c" # green
+  magenta:
+    "3": "#b48ead" # magenta
 
 ansi:
   black: "palette.neutral.1"
-  red: "palette.aurora.1"
-  green: "palette.aurora.4"
-  yellow: "palette.aurora.3"
+  red: "palette.red.3"
+  green: "palette.green.3"
+  yellow: "palette.yellow.3"
   blue: "palette.frost.1"
-  magenta: "palette.aurora.5"
+  magenta: "palette.magenta.3"
   cyan: "palette.frost.4"
   white: "palette.neutral.4"
   brightBlack: "palette.neutral.3"
-  brightRed: "palette.aurora.1"
-  brightGreen: "palette.aurora.4"
-  brightYellow: "palette.aurora.3"
+  brightRed: "palette.red.3"
+  brightGreen: "palette.green.3"
+  brightYellow: "palette.yellow.3"
   brightBlue: "palette.frost.2"
-  brightMagenta: "palette.aurora.5"
+  brightMagenta: "palette.magenta.3"
   brightCyan: "palette.frost.3"
   brightWhite: "palette.neutral.5"
 
@@ -50,21 +54,21 @@ base16:
   base05: "palette.neutral.4"
   base06: "palette.neutral.5"
   base07: "palette.neutral.5"
-  base08: "palette.aurora.1"
-  base09: "palette.aurora.2"
-  base0A: "palette.aurora.3"
-  base0B: "palette.aurora.4"
+  base08: "palette.red.3"
+  base09: "palette.orange.3"
+  base0A: "palette.yellow.3"
+  base0B: "palette.green.3"
   base0C: "palette.frost.4"
   base0D: "palette.frost.1"
-  base0E: "palette.aurora.5"
-  base0F: "palette.aurora.2"
+  base0E: "palette.magenta.3"
+  base0F: "palette.orange.3"
 
 semantic:
-  error: "palette.aurora.1"
-  warning: "palette.aurora.3"
-  success: "palette.aurora.4"
+  error: "palette.red.3"
+  warning: "palette.yellow.3"
+  success: "palette.green.3"
   info: "palette.frost.2"
-  highlight: "palette.aurora.3"
+  highlight: "palette.magenta.3"
   link: "palette.frost.2"
 
 ui:

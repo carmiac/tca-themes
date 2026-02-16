@@ -35,7 +35,7 @@ cargo run --example picker --features widgets,loader -- ../themes
 
 1. Start with one of these examples as a template
 2. Modify the palette colors to your liking
-3. Validate with `tca-validator` to ensure WCAG contrast compliance
+3. Validate with `tca-validator` to ensure schema compliance
 4. Test exports to your preferred terminal/editor
 5. Share with the community!
 

@@ -8,20 +8,20 @@ Example themes demonstrating the Terminal Colors Architecture specification, and
 
 ```bash
 cd ..
-tca-validator/target/release/tca-validator themes/nord-dark.yaml
+tca validate themes/nord-dark.toml
 ```
 
 ### Export to your terminal
 
 ```bash
 # Kitty
-tca-export/target/release/tca-export themes/dracula.yaml -f kitty -o ~/.config/kitty/theme.conf
+tca export themes/dracula.toml -f kitty -o ~/.config/kitty/theme.conf
 
 # Alacritty
-tca-export/target/release/tca-export themes/nord-dark.yaml -f alacritty -o ~/.config/alacritty/colors.toml
+tca export themes/nord-dark.toml -f alacritty -o ~/.config/alacritty/colors.toml
 
 # tmux
-tca-export/target/release/tca-export themes/solarized-light.yaml -f tmux -o ~/.config/tmux/colors.conf
+tca export themes/solarized-light.toml -f tmux -o ~/.config/tmux/colors.conf
 ```
 
 ### Preview with the picker

@@ -1,12 +1,11 @@
 # Terminal Colors Architecture (TCA) Specification
 
 **Version:** 1.0.0  
-**Status:** Draft  
-**Last Updated:** 2026-02-15
+**Status:** Draft
 
 ## Overview
 
-Terminal Colors Architecture (TCA) is a specification for defining terminal application color themes in a structured, portable format for use by developers and theme authors. TCA themes are defined in YAML and can be used across multiple terminal applications, UI frameworks, and color schemes.
+Terminal Colors Architecture (TCA) is a specification for defining terminal application color themes in a structured, portable format for use by developers and theme authors. TCA themes are defined in TOML and can be used across multiple terminal applications, UI frameworks, and color schemes.
 
 ## Goals
 
@@ -18,28 +17,28 @@ Terminal Colors Architecture (TCA) is a specification for defining terminal appl
 
 ## File Format
 
-TCA themes are defined in YAML (`.yaml` or `.yml` extension).
+TCA themes are defined in TOML (`.toml` extension).
 
-**File naming convention:** `kebab-case.yaml` (e.g., `nord-dark.yaml`, `solarized-light.yaml`)
+**File naming convention:** `kebab-case.toml` (e.g., `nord-dark.toml`, `solarized-light.toml`)
 
 ## Structure
 
-A TCA theme consists of five sections:
+A TCA theme consists of six sections:
 
-```yaml
-meta: # Theme metadata (required)
-palette: # Color ramps (required)
-ansi: # 16 ANSI terminal colors (required)
-semantic: # Semantic color names (optional)
-ui: # UI element colors (optional)
-base16: # Base16 compatibility (optional)
+```toml
+[theme]    # Theme metadata (required)
+[ansi]     # 16 ANSI terminal colors (required)
+[palette]  # Color ramps (optional)
+[base16]   # Base16 compatibility (optional)
+[semantic] # Semantic color names (required)
+[ui]       # UI element colors (required)
 ```
 
 ---
 
-## 1. Meta Section
+## 1. Theme Metadata Section
 
-**Status:** Required
+**Required**
 
 Theme metadata for identification and attribution.
 
@@ -52,94 +51,25 @@ Theme metadata for identification and attribution.
 | `author` | string | No | Theme author name or organization |
 | `version` | string | No | Theme version (semver recommended) |
 | `description` | string | No | Brief description of the theme |
+| `dark` | bool | No | Is the theme a dark mode theme |
 
 ### Example
 
-```yaml
-meta:
-  name: "Nord Dark"
-  slug: "nord-dark"
-  author: "Arctic Ice Studio"
-  version: "1.0.0"
-  description: "An arctic, north-bluish color palette"
+```toml
+[theme]
+name = "Nord Dark"
+slug = "nord-dark"
+author = "Arctic Ice Studio"
+version = "1.0.0"
+description = "An arctic, north-bluish color palette"
+dark = true
 ```
 
 ---
 
-## 2. Palette Section
+## 2. ANSI Section
 
-**Status:** Required
-
-The palette defines the foundational colors of the theme using color ramps. All other sections reference colors from the palette.
-
-### Structure
-
-```yaml
-palette:
-  neutral: # Required neutral (grayscale-ish) ramp
-    "1": "#000000"
-    "2": "#4a4a4a"
-    "3": "#8a8a8a"
-    "4": "#c0c0c0"
-    "5": "#ffffff"
-
-  <rampname>: # Optional additional ramps (red, blue, etc.)
-    "1": "#darkcolor"
-    "5": "#lightcolor"
-```
-
-### Rules
-
-1. **Required Ramp:**
-   - Must have a `neutral` ramp for grayscale-ish colors
-   - `neutral` ramp must have all five keys.
-
-2. **Ramp Keys:**
-   - Keys must be strings from "1" to "5"
-   - Valid: `"1"`, `"2"`, `"3"`, `"4"`, `"5"`
-   - Invalid: `"0"`, `"6"`, `"10"`, `"000"`, `"900"`
-   - Additional ramps can be sparse (don't need all 5 keys)
-   - Example: `{"1": "#0f00f1f", "3": "#6a6a8c", "5": "#f0f0ff"}` is valid
-
-3. **Ramp Values:**
-   - Must be hex colors in format `#RRGGBB` (6-digit hex)
-   - Invalid: `#RGB` (3-digit), `rgb(...)`, color names
-
-4. **Ramp Naming:**
-   - Use descriptive color names: `red`, `blue`, `green`, `purple`
-   - Avoid generic names: `vibrant`, `accent`, `custom`
-
-5. **Ramp Ordering:**
-   - Within each ramp, lower numbers should be darker
-   - Higher numbers should be lighter
-   - Example: `"1"` = darkest, `"5"` = lightest
-
-### Example
-
-```yaml
-palette:
-  neutral:
-    "1": "#2e3440" # Darkest gray
-    "2": "#3b4252"
-    "3": "#434c5e"
-    "4": "#4c566a"
-    "5": "#eceff4" # Lightest gray
-
-  red:
-    "1": "#3b1e1e"
-    "3": "#bf616a"
-    "5": "#d08770"
-
-  blue:
-    "2": "#5e81ac" # Sparse - no "1"
-    "4": "#81a1c1" # Sparse - no "3" or "5"
-```
-
----
-
-## 3. ANSI Section
-
-**Status:** Required
+**Required**
 
 Defines the 16 standard ANSI terminal colors.
 
@@ -153,50 +83,116 @@ All fields are **required**.
 
 **Bright Colors:**
 
-- `brightBlack`, `brightRed`, `brightGreen`, `brightYellow`
-- `brightBlue`, `brightMagenta`, `brightCyan`, `brightWhite`
+- `bright_black`, `bright_red`, `bright_green`, `bright_yellow`
+- `bright_blue`, `bright_magenta`, `bright_cyan`, `bright_white`
 
 ### Value Format
 
-Values must be palette references in the format:
-
-```
-"palette.<rampname>.<key>"
-```
-
-- Valid: `"palette.neutral.1"`, `"palette.red.3"`
-- Invalid: `"#ff0000"` (direct hex)
-- Invalid: `"$palette.neutral.1"` ($ prefix)
-- Invalid: `"$neutral.1"` (shorthand)
+- Must be hex colors in format `#RRGGBB` (6-digit hex)
 
 ### Example
 
-```yaml
-ansi:
-  black: "palette.neutral.1"
-  red: "palette.red.3"
-  green: "palette.green.3"
-  yellow: "palette.yellow.3"
-  blue: "palette.blue.3"
-  magenta: "palette.purple.3"
-  cyan: "palette.cyan.3"
-  white: "palette.neutral.5"
+```toml
+[ansi]
+black   = "#000000"
+red     = "#800000"
+green   = "#008000"
+yellow  = "#808000"
+blue    = "#000080"
+magenta = "#800080"
+cyan    = "#008080"
+white   = "#c0c0c0"
+bright_black   = "#808080"
+bright_red     = "#ff0000"
+bright_green   = "#00ff00"
+bright_yellow  = "#ffff00"
+bright_blue    = "#0000ff"
+bright_magenta = "#ff00ff"
+bright_cyan    = "#00ffff"
+bright_white   = "#ffffff"
+```
 
-  brightBlack: "palette.neutral.2"
-  brightRed: "palette.red.4"
-  brightGreen: "palette.green.4"
-  brightYellow: "palette.yellow.4"
-  brightBlue: "palette.blue.4"
-  brightMagenta: "palette.purple.4"
-  brightCyan: "palette.cyan.4"
-  brightWhite: "palette.neutral.5"
+## 3. Palette Section
+
+**Optional**
+
+The palette is used to define other colors that may be used elsewhere in the theme using color ramps. Colors in the palette may be defined by either hex strings or references to colors from the ANSI section. Color ramps should scale from darkest to lightest.
+
+### Structure
+
+```toml
+[palette]
+gray = [           # Greyscale-ish ramp
+  "ansi.black",
+  "#4a4a4a",
+  "#8a8a8a",
+  "ansi.white",
+  "ansi.bright_white",
+]
+
+red = ["#3b1e1e", "#bf616a", "#d08770"]
+```
+
+### Rules
+
+1. Ramp Values:
+   - Must be hex colors in format `#RRGGBB` (6-digit hex) or ansi colors in format `ansi.color`
+
+2. Ramp Naming:
+   - Use descriptive color names: `red`, `blue`, `green`, `purple`
+   - Avoid generic names: `vibrant`, `accent`, `custom`
+
+3. Ramp Ordering:
+   - Within each ramp, earlier colors should be darker
+   - Higher indexes should be lighter
+
+4. Ramp Indexing:
+   - Arrays are 0-indexed: the first element is index `0`
+   - Example: `palette.red.0` refers to the first element of the `red` ramp
+
+---
+
+## 4. Base16 Section
+
+**Recommended**
+
+Base16 color mapping for compatibility with Base16 color ecosystem.
+
+### Fields
+
+16 fields from `base00` through `base0F`, all optional.
+
+### Value Format
+
+May be a direct hex string, or a reference to ansi or palette colors.
+
+### Example
+
+```toml
+[base16]
+base00 = "palette.neutral.0"
+base01 = "palette.neutral.1"
+base02 = "palette.neutral.1"
+base03 = "palette.neutral.2"
+base04 = "palette.neutral.2"
+base05 = "palette.neutral.3"
+base06 = "palette.neutral.4"
+base07 = "palette.neutral.4"
+base08 = "ansi.red"
+base09 = "#ffa500"
+base0A = "ansi.yellow"
+base0B = "ansi.green"
+base0C = "ansi.cyan"
+base0D = "ansi.blue"
+base0E = "ansi.magenta"
+base0F = "ansi.bright_red"
 ```
 
 ---
 
-## 4. Semantic Section
+## 5. Semantic Section
 
-Optional (recommended)
+Required
 
 Semantic colors provide meaningful color names for common use cases.
 
@@ -211,33 +207,27 @@ Semantic colors provide meaningful color names for common use cases.
 | `highlight` | Highlighted text       | Selection, search results |
 | `link`      | Hyperlinks             | Clickable links           |
 
-All fields are optional, but recommended for consistency.
-
 ### Value Format
 
-Same as ANSI section - must use palette references:
-
-```
-"palette.<rampname>.<key>"
-```
+May be a direct hex string, or a reference to ansi, base16, or palette colors.
 
 ### Example
 
-```yaml
-semantic:
-  error: "palette.red.4"
-  warning: "palette.yellow.4"
-  info: "palette.blue.4"
-  success: "palette.green.4"
-  highlight: "palette.cyan.4"
-  link: "palette.blue.5"
+```toml
+[semantic]
+error     = "ansi.bright_red"
+warning   = "ansi.yellow"
+info      = "ansi.blue"
+success   = "ansi.green"
+highlight = "base16.base03"
+link      = "#2000FF"
 ```
 
 ---
 
-## 5. UI Section
+## 6. UI Section
 
-Optional (recommended)
+Required
 
 UI colors define colors for user interface elements.
 
@@ -269,69 +259,35 @@ UI colors define colors for user interface elements.
 - `selection.bg` - Selection background
 - `selection.fg` - Selection foreground/text
 
-All fields are optional.
+In TOML, the dotted field names map to nested sub-tables. For example, `bg.primary` is written as `primary` under `[ui.bg]`.
 
 ### Value Format
 
-Same as other sections - must use palette references:
-
-```
-"palette.<rampname>.<key>"
-```
+May be a direct hex string, or a reference to ansi, base16, or palette colors.
 
 ### Example
 
-```yaml
-ui:
-  bg.primary: "palette.neutral.1"
-  bg.secondary: "palette.neutral.2"
-  fg.primary: "palette.neutral.5"
-  fg.secondary: "palette.neutral.4"
-  fg.muted: "palette.neutral.3"
-  border.primary: "palette.neutral.3"
-  border.muted: "palette.neutral.2"
-  cursor.primary: "palette.blue.4"
-  cursor.muted: "palette.neutral.4"
-  selection.bg: "palette.neutral.2"
-  selection.fg: "palette.neutral.5"
-```
+```toml
+[ui.bg]
+primary   = "base16.base00"
+secondary = "base16.base01"
 
----
+[ui.fg]
+primary   = "base16.base05"
+secondary = "base16.base04"
+muted     = "ansi.white"
 
-## 6. Base16 Section
+[ui.border]
+primary = "ansi.bright_white"
+muted   = "ansi.white"
 
-Optional
+[ui.cursor]
+primary = "ansi.yellow"
+muted   = "palette.gray.2"
 
-Base16 color mapping for compatibility with Base16 themes.
-
-### Fields
-
-16 fields from `base00` through `base0F`, all optional.
-
-### Value Format
-
-Same as other sections - must use palette references.
-
-### Example
-
-```yaml
-base16:
-  base00: "palette.neutral.1"
-  base01: "palette.neutral.2"
-  base02: "palette.neutral.2"
-  base03: "palette.neutral.3"
-  base04: "palette.neutral.4"
-  base05: "palette.neutral.5"
-  base06: "palette.neutral.5"
-  base07: "palette.neutral.5"
-  base08: "palette.red.3"
-  base09: "palette.orange.3"
-  base0A: "palette.yellow.3"
-  base0B: "palette.green.3"
-  base0C: "palette.cyan.3"
-  base0D: "palette.blue.3"
-  base0E: "palette.purple.3"
-  base0F: "palette.red.4"
+[ui.selection]
+bg = "base16.base02"
+fg = "ansi.bright_white"
 ```
 
 ---
@@ -342,126 +298,135 @@ TCA themes must pass the following validation checks:
 
 ### 1. Structure Validation
 
-- Valid YAML syntax
-- Required sections present (meta, palette, ansi)
+- Valid TOML syntax
+- Required sections present (theme, ansi, ui, semantic)
 - All required fields present
 
-### 2. Palette Validation
+### 2. Reference Validation
 
-- Neutral ramp exists and contains keys 1-5
-- All ramp keys are in range 1-5
-- All palette values are valid hex colors (#RRGGBB)
+- No references in ansi section
+- References only refer to prior sections
+- All referenced colors exist
 
-### 3. Reference Validation
+### 3. Contrast Validation (Recommended)
 
-- No direct hex colors in ansi/semantic/ui/base16
-- All palette references use correct format
-- All referenced palette colors exist
+For accessibility the following minimum contrast ratios are recommended:
 
-### 4. Contrast Validation (Recommended)
-
-- WCAG AA contrast ratios (4.5:1 for normal text)
-- Neutral ramp luminance span >= 0.40
-- Adjacent neutral steps >= 0.01 luminance difference
-
-Failures in sections 1-3 are **errors** (theme is invalid).  
-Failures in section 4 are **warnings** (theme is valid but may have accessibility issues).
+| Fields                      | Recommended | Warning | Error |
+| --------------------------- | ----------- | ------- | ----- |
+| fg.primary / bg.\*          | > 4.5       | < 3.5   | < 3.0 |
+| fg.muted / bg.\*            | > 3.0       | < 2.5   | < 2.0 |
+| semantic.\* / bg.\*         | > 4.5       | < 2.5   | < 2.0 |
+| selection.fg / selection.bg | > 3.0       | < 2.5   | < 2.0 |
+| border.\* / bg.\*           | > 3.0       | < 2.5   | < 2.0 |
+| cursor.primary / bg.\*      | > 4.5       | < 3.5   | < 3.0 |
+| cursor.muted / bg.\*        | > 3.0       | < 2.5   | < 2.0 |
 
 ---
 
 ## Complete Example
 
-```yaml
-meta:
-  name: "Example Theme"
-  slug: "example-theme"
-  author: "Theme Author"
-  version: "1.0.0"
-  description: "An example TCA theme"
+```toml
+[theme]
+name = "Example Theme"
+slug = "example-theme"
+author = "Theme Author"
+version = "1.0.0"
+description = "An example TCA theme"
+dark = true
 
-palette:
-  neutral:
-    "1": "#1a1a1a"
-    "2": "#333333"
-    "3": "#666666"
-    "4": "#999999"
-    "5": "#f0f0f0"
+[palette]
+neutral = ["#1a1a1a", "#333333", "#666666", "#999999", "#f0f0f0"]
+red     = ["#3d0000", "#cc0000", "#ff6666"]
+green   = ["#003d00", "#00aa00", "#66ff66"]
+blue    = ["#001f3f", "#0074d9", "#7fdbff"]
+yellow  = ["#3d3d00", "#ccaa00", "#ffe066"]
 
-  red:
-    "1": "#3d0000"
-    "3": "#cc0000"
-    "5": "#ff6666"
+[ansi]
+black   = "#1a1a1a"
+red     = "#cc0000"
+green   = "#00aa00"
+yellow  = "#ccaa00"
+blue    = "#0074d9"
+magenta = "#8800aa"
+cyan    = "#007499"
+white   = "#999999"
 
-  blue:
-    "1": "#001f3f"
-    "3": "#0074d9"
-    "5": "#7fdbff"
+bright_black   = "#333333"
+bright_red     = "#ff6666"
+bright_green   = "#66ff66"
+bright_yellow  = "#ffe066"
+bright_blue    = "#7fdbff"
+bright_magenta = "#cc66ff"
+bright_cyan    = "#66ddff"
+bright_white   = "#f0f0f0"
 
-ansi:
-  black: "palette.neutral.1"
-  red: "palette.red.3"
-  green: "palette.green.3"
-  yellow: "palette.yellow.3"
-  blue: "palette.blue.3"
-  magenta: "palette.purple.3"
-  cyan: "palette.cyan.3"
-  white: "palette.neutral.5"
-  brightBlack: "palette.neutral.2"
-  brightRed: "palette.red.4"
-  brightGreen: "palette.green.4"
-  brightYellow: "palette.yellow.4"
-  brightBlue: "palette.blue.4"
-  brightMagenta: "palette.purple.4"
-  brightCyan: "palette.cyan.4"
-  brightWhite: "palette.neutral.5"
+[base16]
+base00 = "palette.neutral.0"
+base01 = "palette.neutral.1"
+base02 = "palette.neutral.1"
+base03 = "palette.neutral.2"
+base04 = "palette.neutral.2"
+base05 = "palette.neutral.3"
+base06 = "palette.neutral.4"
+base07 = "palette.neutral.4"
+base08 = "palette.red.1"
+base09 = "#ff8800"
+base0A = "palette.yellow.1"
+base0B = "palette.green.1"
+base0C = "ansi.cyan"
+base0D = "palette.blue.1"
+base0E = "ansi.magenta"
+base0F = "palette.red.0"
 
-semantic:
-  error: "palette.red.4"
-  warning: "palette.yellow.4"
-  info: "palette.blue.4"
-  success: "palette.green.4"
-  highlight: "palette.cyan.4"
-  link: "palette.blue.5"
+[semantic]
+error     = "palette.red.1"
+warning   = "palette.yellow.1"
+info      = "palette.blue.1"
+success   = "palette.green.1"
+highlight = "ansi.bright_yellow"
+link      = "palette.blue.2"
 
-ui:
-  bg.primary: "palette.neutral.1"
-  bg.secondary: "palette.neutral.2"
-  fg.primary: "palette.neutral.5"
-  fg.secondary: "palette.neutral.4"
-  fg.muted: "palette.neutral.3"
-  border.primary: "palette.neutral.3"
-  border.muted: "palette.neutral.2"
-  cursor.primary: "palette.blue.4"
-  cursor.muted: "palette.neutral.4"
-  selection.bg: "palette.neutral.2"
-  selection.fg: "palette.neutral.5"
+[ui.bg]
+primary   = "palette.neutral.0"
+secondary = "palette.neutral.1"
+
+[ui.fg]
+primary   = "palette.neutral.4"
+secondary = "palette.neutral.3"
+muted     = "palette.neutral.2"
+
+[ui.border]
+primary = "palette.neutral.2"
+muted   = "palette.neutral.1"
+
+[ui.cursor]
+primary = "palette.blue.1"
+muted   = "palette.neutral.3"
+
+[ui.selection]
+bg = "palette.neutral.1"
+fg = "palette.neutral.4"
 ```
 
 ---
 
 ## Design Principles
 
-### 1. Single Source of Truth
-
-All colors are defined in the palette. Other sections reference the palette. This ensures:
-
-- Consistency across the theme
-- Easy color adjustments
-- Clear color relationships
-
-### 2. Semantic Over Literal
+### 1. Semantic Over Literal
 
 Use semantic names (error, success) rather than literal names (red, green) in application code. This allows theme authors flexibility in color choices.
 
-### 3. Accessibility Matters
+### 2. Practical Accessibility Matters
 
 Themes should meet WCAG AA standards:
 
 - 4.5:1 contrast ratio for normal text
 - 3:1 for large text
-- Sufficient luminance range in neutral ramp
 
-### 4. Framework Agnostic
+However many popular existing themes do not, so the recommendations are somewhat relaxed.
+
+### 3. Framework Agnostic
 
 TCA themes can be exported to any format:
 
@@ -477,22 +442,22 @@ TCA themes can be exported to any format:
 ### Validation
 
 ```bash
-tca validate theme.yaml
+tca validate theme.toml
 ```
 
 ### Export
 
 ```bash
-tca export theme.yaml kitty
-tca export theme.yaml alacritty
-tca export theme.yaml vim
+tca export theme.toml kitty
+tca export theme.toml alacritty
+tca export theme.toml vim
 ```
 
 ### Loading
 
 Themes can be loaded from:
 
-1. Explicit file path
+1. Explicit filepath
 2. Shared themes directory (`$XDG_DATA_HOME/tca/themes`)
 3. Current directory
 
@@ -514,7 +479,6 @@ This specification follows semantic versioning:
 
 ## References
 
-- [Schema](schema/tca.schema.pragmatic.json) - JSON Schema for validation
 - [Examples](themes/) - Example themes demonstrating the specification
 - [Contributing](CONTRIBUTING.md) - Guide for creating themes
 

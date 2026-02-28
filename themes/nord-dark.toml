@@ -1,8 +1,9 @@
 [theme]
 name = "Nord Dark"
 slug = "nord-dark"
-author = "TCA Project"
+author = "Arctic Ice Studio / TCA Project"
 version = "1.0.0"
+description = "An arctic, north-bluish color palette. Based on the Nord theme by Arctic Ice Studio."
 dark = true
 
 

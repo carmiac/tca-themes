@@ -17,31 +17,65 @@ version     = "1.0.0"
 description = "My favorite amazing theme."
 dark        = true
 
-[palette]
-# Tones in each ramp should go from darkest to lightest (0-indexed arrays).
-# The neutral ramp is required and should cover the full lightness range.
-neutral = ["#000000", "#6a6a6a", "#1a1a1a", "#bababa", "#ffffff"]
-
-# Additional color ramps (optional).
-# Use obvious color names: "blue" or "pink" is good; "my_colors" or "vibrant" is bad.
-# Ramps can have any number of entries; reference them by 0-based index.
-blue = ["#001f3f", "#7fdbff"]
 
 [ansi]
 # All ANSI values must be direct hex colors.
 black   = "#000000"
-# ... your other colors
+red     = "#cc0000"
+green   = "#00aa00"
+yellow  = "#ccaa00"
 blue    = "#001f3f"
-# ... all 16 ANSI colors (bright_* use snake_case)
-bright_blue = "#7fdbff"
+magenta = "#8800aa"
+cyan    = "#007499"
+white   = "#999999"
+bright_black   = "#333333"
+bright_red     = "#ff6666"
+bright_green   = "#66ff66"
+bright_yellow  = "#ffe066"
+bright_blue    = "#7fdbff"
+bright_magenta = "#cc66ff"
+bright_cyan    = "#66ddff"
+bright_white   = "#f0f0f0"
+
+[palette]
+# Tones in each ramp should go from darkest to lightest (0-indexed arrays).
+# The neutral ramp should cover the full lightness range.
+neutral = ["#000000", "#1a1a1a", "#6a6a6a", "#bababa", "#ffffff"]
+
+# Additional color ramps (optional).
+# Use obvious color names: "blue" or "pink" is good; "my_colors" or "vibrant" is bad.
+# Ramp values must be hex (#RRGGBB) or ansi.* references — no palette.* or base16.* references.
+red    = ["#800000", "#cc0000", "#ff6666"]
+yellow = ["#404000", "#ccaa00", "#ffe066"]
+green  = ["#004000", "#00aa00", "#66ff66"]
+cyan   = ["#004040", "#007499", "#66ddff"]
+blue   = ["#001f3f", "#0074d9", "#7fdbff"]
+
+[base16]
+base00 = "palette.neutral.0"
+base01 = "palette.neutral.1"
+base02 = "palette.neutral.1"
+base03 = "palette.neutral.2"
+base04 = "palette.neutral.2"
+base05 = "palette.neutral.3"
+base06 = "palette.neutral.4"
+base07 = "palette.neutral.4"
+base08 = "palette.red.1"
+base09 = "#ff8800"
+base0A = "palette.yellow.1"
+base0B = "palette.green.1"
+base0C = "ansi.cyan"
+base0D = "palette.blue.1"
+base0E = "ansi.magenta"
+base0F = "palette.red.0"
 
 [semantic]
-error     = "palette.red.0"
-warning   = "palette.yellow.0"
-info      = "palette.blue.0"
-success   = "palette.green.0"
-highlight = "palette.cyan.0"
-link      = "palette.blue.1"
+error     = "palette.red.1"
+warning   = "palette.yellow.1"
+info      = "palette.blue.1"
+success   = "palette.green.1"
+highlight = "palette.cyan.1"
+link      = "palette.blue.2"
 
 [ui.bg]
 primary   = "palette.neutral.0"
@@ -50,7 +84,7 @@ secondary = "palette.neutral.1"
 [ui.fg]
 primary   = "palette.neutral.4"
 secondary = "palette.neutral.3"
-muted     = "palette.neutral.4"
+muted     = "palette.neutral.2"
 
 [ui.border]
 primary = "palette.neutral.3"
@@ -80,7 +114,6 @@ tca validate your-theme.toml
 The validator checks:
 
 - Schema compliance
-- No direct hex values in semantic/ui/base16 (must use references)
 - WCAG contrast ratios (for accessibility)
 - Valid color references
 - Required fields present
@@ -115,16 +148,16 @@ cargo run --example picker --features widgets,loader -- ../../tca-themes
 
 All themes must include:
 
-- Complete metadata (name, slug, author, version)
+- Metadata (`name`)
 - All 16 ANSI colors (direct hex values)
 
 Themes are recommended to include:
 
+- Extended metadata (`slug`, `author`, `version`, `description`, `dark`)
 - A `palette` with a neutral ramp
 - Base16 colors
 - All 6 semantic colors
 - All 11 UI fields
-- Extended metadata (description, dark)
 
 ### Naming Conventions
 
@@ -140,8 +173,9 @@ Themes are recommended to include:
    - First element is index `0`
    - Reference as `palette.rampname.0`, `palette.rampname.1`, etc.
 
-3. **Semantic, UI, and Base16 should reference palette, ansi, or base16**
-   - Direct hex is allowed but palette references are preferred for maintainability
+3. **Semantic and UI values may reference palette, ansi, or base16**
+   - Base16 values may only reference palette or ansi (not other base16 entries)
+   - Direct hex is allowed in all sections but palette references are preferred for maintainability
 
 4. **ANSI bright keys use snake_case**: `bright_black`, `bright_red`, etc.
 
@@ -160,7 +194,7 @@ Themes are recommended to include:
 
 ## Code of Conduct
 
-Be respectful and constructive. We welcome themes of all styles that pass the validator. Nazis can fuck off though.
+Be respectful and constructive. We welcome themes of all styles that pass the validator.
 
 ## License
 

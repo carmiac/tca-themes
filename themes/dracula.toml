@@ -1,7 +1,7 @@
 [theme]
 name = "Dracula"
 slug = "dracula"
-author = ""
+author = "Zeno Rocha / draculatheme.com"
 version = "1.0.0"
 description = "Based on https://draculatheme.com/"
 dark = true

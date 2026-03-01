@@ -1,0 +1,54 @@
+name: Validate Themes
+
+on:
+  push:
+    paths:
+      - "themes/**"
+      - ".github/workflows/validate.yml"
+  pull_request:
+    paths:
+      - "themes/**"
+      - ".github/workflows/validate.yml"
+
+jobs:
+  validate:
+    name: tca validate
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Cache cargo registry
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            ~/.cargo/bin
+          key: cargo-tca-${{ runner.os }}-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+            cargo-tca-${{ runner.os }}-
+
+      - name: Install tca
+        run: cargo install tca
+
+      - name: Validate all themes
+        run: |
+          failed=0
+          for f in themes/*.toml; do
+            echo "Validating $f ..."
+            if ! tca validate "$f"; then
+              echo "FAIL: $f"
+              failed=$((failed + 1))
+            fi
+          done
+          if [ "$failed" -gt 0 ]; then
+            echo ""
+            echo "$failed theme(s) failed validation."
+            exit 1
+          fi
+          echo ""
+          echo "All themes passed validation."

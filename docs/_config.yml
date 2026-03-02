@@ -1,0 +1,11 @@
+title: "Terminal Colors Architecture"
+description: "A portable, structured format for terminal color themes."
+url: "https://carmiac.github.io"
+baseurl: "/tca-themes"
+
+# Disable default theme — we use custom CSS
+theme: null
+
+exclude:
+  - "*.toml"
+  - schema/

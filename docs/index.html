@@ -1,0 +1,410 @@
+---
+---
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TCA — Terminal Colors Architecture</title>
+  <meta name="description"
+    content="A portable, structured format for terminal color themes. Write once, use everywhere.">
+  <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
+</head>
+
+<body>
+
+  <!-- ── Hero ──────────────────────────────────────────────── -->
+  <header class="hero">
+    <div class="container">
+      <div class="hero-eyebrow">Terminal Colors Architecture</div>
+      <h1>One theme.<br><span>Every terminal. Every CLI. Every TUI.</span></h1>
+      <p class="hero-tagline">
+        TCA is a structured, portable format for terminal and cli/tui color themes.
+        Define your palette once in TOML — export to any terminal, editor, or UI framework.
+      </p>
+      <div class="hero-install">cargo install tca</div>
+      <div class="hero-links">
+        <a href="https://github.com/carmiac/tca-themes">GitHub</a>
+        <a href="https://github.com/carmiac/tca-themes/blob/main/SPECIFICATION.md">Specification</a>
+        <a href="https://github.com/carmiac/tca-themes/blob/main/CONTRIBUTING.md">Contribute a Theme</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+
+      <!-- ── Ecosystem ─────────────────────────────────────────── -->
+      <section class="section">
+        <div class="section-label">Ecosystem</div>
+        <h2>Libraries &amp; Tools</h2>
+        <p class="section-intro">
+          TCA themes work across languages and frameworks. Pick the library for your stack.
+        </p>
+        <div class="cards">
+          <div class="card">
+            <div class="card-icon">🎨</div>
+            <h3><a href="https://github.com/carmiac/tca-themes">tca-themes</a></h3>
+            <p>Ready-to-use theme collection and the canonical JSON schema for validation.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon">🦀</div>
+            <h3><a href="https://github.com/carmiac/tca-rust">tca-rust</a></h3>
+            <p>Core Rust crates: CLI tool, type definitions, theme loader, and Ratatui widgets for colorful terminal
+              applications.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon">🐹</div>
+            <h3><a href="https://github.com/carmiac/tca-go">tca-go</a></h3>
+            <p>Go library with Lipgloss integration for colorful terminal applications.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon">🐍</div>
+            <h3><a href="https://github.com/carmiac/tca-python">tca-python</a></h3>
+            <p>Python library with Textual integration for colorful terminal applications.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Quick Start ───────────────────────────────────────── -->
+      <section class="section">
+        <div class="section-label">Quick Start</div>
+        <h2>Get Going Fast</h2>
+        <p class="section-intro">Install the CLI, validate a theme, and export to your terminal in under a minute.</p>
+
+        <div class="quickstart-grid">
+          <div class="qs-block">
+            <h3>CLI</h3>
+            <pre><span class="comment"># Install</span>
+              <span class="prompt">$</span> cargo install tca
+
+              <span class="comment"># Validate a theme</span>
+              <span class="prompt">$</span> tca validate dracula
+
+              <span class="comment"># List installed themes</span>
+              <span class="prompt">$</span> tca list
+            </pre>
+          </div>
+
+          <div class="qs-block">
+            <h3>Export</h3>
+            <pre><span class="prompt">$</span> tca export dracula kitty
+              <span class="prompt">$</span> tca export nord-dark alacritty \
+              --output ~/.config/alacritty/colors.toml
+              <span class="prompt">$</span> tca export solarized-light tmux
+              <span class="prompt">$</span> tca export one-dark vscode
+            </pre>
+          </div>
+
+          <div class="qs-block">
+            <h3>Rust</h3>
+            <pre><span class="comment"># Cargo.toml</span>
+              tca-loader = "0.1"
+              tca-types = "0.1"
+              tca-ratatui = "0.1"</pre>
+          </div>
+
+          <div class="qs-block">
+            <h3>Go</h3>
+            <pre><span class="prompt">$</span> go get github.com/carmiac/tca-go</pre>
+          </div>
+
+          <div class="qs-block">
+            <h3>Python</h3>
+            <pre><span class="prompt">$</span> pip install tca-python
+
+              <span class="comment"># With Textual support</span>
+              <span class="prompt">$</span> pip install "tca-python[textual]"
+            </pre>
+          </div>
+        </div>
+
+        <br>
+        <p class="section-intro" style="margin-bottom: 16px;">Supported export formats:</p>
+        <div class="format-grid">
+          <div class="format-item">kitty<span>Kitty terminal</span></div>
+          <div class="format-item">alacritty<span>Alacritty terminal</span></div>
+          <div class="format-item">iterm2<span>iTerm2 preset</span></div>
+          <div class="format-item">tmux<span>tmux config</span></div>
+          <div class="format-item">vim<span>Vim colorscheme</span></div>
+          <div class="format-item">helix<span>Helix editor</span></div>
+          <div class="format-item">vscode<span>VS Code theme</span></div>
+          <div class="format-item">base16<span>Base16 YAML</span></div>
+          <div class="format-item">starship<span>Starship prompt</span></div>
+        </div>
+      </section>
+
+      <!-- ── Theme Gallery ──────────────────────────────────────── -->
+      <section class="section">
+        <div class="section-label">Themes</div>
+        <h2>Theme Gallery</h2>
+        <p class="section-intro">
+          All themes ship in <a href="https://github.com/carmiac/tca-themes/tree/main/themes">tca-themes</a>
+          and pass schema validation, WCAG contrast checks, and export to all formats.
+        </p>
+
+        <div class="gallery">
+
+          <!-- Catppuccin Mocha -->
+          <div class="theme-card">
+            <div class="theme-preview" style="background:#1e1e2e; color:#cdd6f4;">
+              <div class="theme-preview-line" style="color:#cba4f7;">fn <span style="color:#89b4fa;">main</span>() {
+              </div>
+              <div class="theme-preview-line">&nbsp;&nbsp;<span style="color:#a6e3a1;">println!</span>(<span
+                  style="color:#a6e3a1;">"hello"</span>);</div>
+              <div class="theme-preview-line">}</div>
+            </div>
+            <div class="theme-swatches">
+              <div class="swatch" style="background:#f38ba8;"></div>
+              <div class="swatch" style="background:#a6e3a1;"></div>
+              <div class="swatch" style="background:#f9e2af;"></div>
+              <div class="swatch" style="background:#89b4fa;"></div>
+              <div class="swatch" style="background:#cba4f7;"></div>
+              <div class="swatch" style="background:#94e2d5;"></div>
+            </div>
+            <div class="theme-meta" style="background:#1e1e2e; color:#cdd6f4;">
+              <span class="theme-badge" style="color:#cba4f7; border-color:#cba4f7;">dark</span>
+              <div class="theme-name">Catppuccin Mocha</div>
+              <div class="theme-desc">Soothing pastel dark theme</div>
+            </div>
+          </div>
+
+          <!-- Dracula -->
+          <div class="theme-card">
+            <div class="theme-preview" style="background:#21222c; color:#f8f8f2;">
+              <div class="theme-preview-line" style="color:#ff79c6;">fn <span style="color:#8be9fd;">main</span>() {
+              </div>
+              <div class="theme-preview-line">&nbsp;&nbsp;<span style="color:#50fa7b;">println!</span>(<span
+                  style="color:#f1fa8c;">"hello"</span>);</div>
+              <div class="theme-preview-line">}</div>
+            </div>
+            <div class="theme-swatches">
+              <div class="swatch" style="background:#ff5555;"></div>
+              <div class="swatch" style="background:#50fa7b;"></div>
+              <div class="swatch" style="background:#f1fa8c;"></div>
+              <div class="swatch" style="background:#bd93f9;"></div>
+              <div class="swatch" style="background:#ff79c6;"></div>
+              <div class="swatch" style="background:#8be9fd;"></div>
+            </div>
+            <div class="theme-meta" style="background:#21222c; color:#f8f8f2;">
+              <span class="theme-badge" style="color:#bd93f9; border-color:#bd93f9;">dark</span>
+              <div class="theme-name">Dracula</div>
+              <div class="theme-desc">Classic vampire-inspired dark theme</div>
+            </div>
+          </div>
+
+          <!-- Everforest Dark -->
+          <div class="theme-card">
+            <div class="theme-preview" style="background:#2b3339; color:#e9e8d2;">
+              <div class="theme-preview-line" style="color:#d699b6;">fn <span style="color:#7fbbb3;">main</span>() {
+              </div>
+              <div class="theme-preview-line">&nbsp;&nbsp;<span style="color:#a7c080;">println!</span>(<span
+                  style="color:#dbbc7f;">"hello"</span>);</div>
+              <div class="theme-preview-line">}</div>
+            </div>
+            <div class="theme-swatches">
+              <div class="swatch" style="background:#e67e80;"></div>
+              <div class="swatch" style="background:#a7c080;"></div>
+              <div class="swatch" style="background:#dbbc7f;"></div>
+              <div class="swatch" style="background:#7fbbb3;"></div>
+              <div class="swatch" style="background:#d699b6;"></div>
+              <div class="swatch" style="background:#83c092;"></div>
+            </div>
+            <div class="theme-meta" style="background:#2b3339; color:#e9e8d2;">
+              <span class="theme-badge" style="color:#a7c080; border-color:#a7c080;">dark</span>
+              <div class="theme-name">Everforest Dark</div>
+              <div class="theme-desc">Comfortable green-tinted dark theme</div>
+            </div>
+          </div>
+
+          <!-- Gruvbox Dark -->
+          <div class="theme-card">
+            <div class="theme-preview" style="background:#282828; color:#ebdbb2;">
+              <div class="theme-preview-line" style="color:#b16286;">fn <span style="color:#458588;">main</span>() {
+              </div>
+              <div class="theme-preview-line">&nbsp;&nbsp;<span style="color:#98971a;">println!</span>(<span
+                  style="color:#d79921;">"hello"</span>);</div>
+              <div class="theme-preview-line">}</div>
+            </div>
+            <div class="theme-swatches">
+              <div class="swatch" style="background:#cc241d;"></div>
+              <div class="swatch" style="background:#98971a;"></div>
+              <div class="swatch" style="background:#d79921;"></div>
+              <div class="swatch" style="background:#458588;"></div>
+              <div class="swatch" style="background:#b16286;"></div>
+              <div class="swatch" style="background:#689d6a;"></div>
+            </div>
+            <div class="theme-meta" style="background:#282828; color:#ebdbb2;">
+              <span class="theme-badge" style="color:#d79921; border-color:#d79921;">dark</span>
+              <div class="theme-name">Gruvbox Dark</div>
+              <div class="theme-desc">Retro groove theme with warm, earthy tones</div>
+            </div>
+          </div>
+
+          <!-- Mono -->
+          <div class="theme-card">
+            <div class="theme-preview" style="background:#0a0a0a; color:#f5f5f5;">
+              <div class="theme-preview-line" style="color:#d0d0d0;">fn <span style="color:#ffffff;">main</span>() {
+              </div>
+              <div class="theme-preview-line">&nbsp;&nbsp;<span style="color:#a0a0a0;">println!</span>(<span
+                  style="color:#808080;">"hello"</span>);</div>
+              <div class="theme-preview-line">}</div>
+            </div>
+            <div class="theme-swatches">
+              <div class="swatch" style="background:#606060;"></div>
+              <div class="swatch" style="background:#909090;"></div>
+              <div class="swatch" style="background:#b0b0b0;"></div>
+              <div class="swatch" style="background:#606060;"></div>
+              <div class="swatch" style="background:#808080;"></div>
+              <div class="swatch" style="background:#d0d0d0;"></div>
+            </div>
+            <div class="theme-meta" style="background:#0a0a0a; color:#f5f5f5;">
+              <span class="theme-badge" style="color:#a0a0a0; border-color:#a0a0a0;">dark</span>
+              <div class="theme-name">Mono</div>
+              <div class="theme-desc">Minimal monochromatic greyscale</div>
+            </div>
+          </div>
+
+          <!-- Nord Dark -->
+          <div class="theme-card">
+            <div class="theme-preview" style="background:#2e3440; color:#eceff4;">
+              <div class="theme-preview-line" style="color:#b48ead;">fn <span style="color:#8fbcbb;">main</span>() {
+              </div>
+              <div class="theme-preview-line">&nbsp;&nbsp;<span style="color:#a3be8c;">println!</span>(<span
+                  style="color:#ebcb8b;">"hello"</span>);</div>
+              <div class="theme-preview-line">}</div>
+            </div>
+            <div class="theme-swatches">
+              <div class="swatch" style="background:#bf616a;"></div>
+              <div class="swatch" style="background:#a3be8c;"></div>
+              <div class="swatch" style="background:#ebcb8b;"></div>
+              <div class="swatch" style="background:#5e81ac;"></div>
+              <div class="swatch" style="background:#b48ead;"></div>
+              <div class="swatch" style="background:#8fbcbb;"></div>
+            </div>
+            <div class="theme-meta" style="background:#2e3440; color:#eceff4;">
+              <span class="theme-badge" style="color:#88c0d0; border-color:#88c0d0;">dark</span>
+              <div class="theme-name">Nord Dark</div>
+              <div class="theme-desc">Arctic, north-bluish color palette</div>
+            </div>
+          </div>
+
+          <!-- One Dark -->
+          <div class="theme-card">
+            <div class="theme-preview" style="background:#282c34; color:#abb2bf;">
+              <div class="theme-preview-line" style="color:#c678dd;">fn <span style="color:#61afef;">main</span>() {
+              </div>
+              <div class="theme-preview-line">&nbsp;&nbsp;<span style="color:#98c379;">println!</span>(<span
+                  style="color:#e5c07b;">"hello"</span>);</div>
+              <div class="theme-preview-line">}</div>
+            </div>
+            <div class="theme-swatches">
+              <div class="swatch" style="background:#e06c75;"></div>
+              <div class="swatch" style="background:#98c379;"></div>
+              <div class="swatch" style="background:#e5c07b;"></div>
+              <div class="swatch" style="background:#61afef;"></div>
+              <div class="swatch" style="background:#c678dd;"></div>
+              <div class="swatch" style="background:#56b6c2;"></div>
+            </div>
+            <div class="theme-meta" style="background:#282c34; color:#abb2bf;">
+              <span class="theme-badge" style="color:#61afef; border-color:#61afef;">dark</span>
+              <div class="theme-name">One Dark</div>
+              <div class="theme-desc">Clean dark theme inspired by Atom</div>
+            </div>
+          </div>
+
+          <!-- Rosé Pine -->
+          <div class="theme-card">
+            <div class="theme-preview" style="background:#1f1d2e; color:#e0def4;">
+              <div class="theme-preview-line" style="color:#c4a7e7;">fn <span style="color:#9ccfd8;">main</span>() {
+              </div>
+              <div class="theme-preview-line">&nbsp;&nbsp;<span style="color:#31748f;">println!</span>(<span
+                  style="color:#f6c177;">"hello"</span>);</div>
+              <div class="theme-preview-line">}</div>
+            </div>
+            <div class="theme-swatches">
+              <div class="swatch" style="background:#eb6f92;"></div>
+              <div class="swatch" style="background:#31748f;"></div>
+              <div class="swatch" style="background:#f6c177;"></div>
+              <div class="swatch" style="background:#9ccfd8;"></div>
+              <div class="swatch" style="background:#c4a7e7;"></div>
+              <div class="swatch" style="background:#ebbcba;"></div>
+            </div>
+            <div class="theme-meta" style="background:#1f1d2e; color:#e0def4;">
+              <span class="theme-badge" style="color:#c4a7e7; border-color:#c4a7e7;">dark</span>
+              <div class="theme-name">Rosé Pine</div>
+              <div class="theme-desc">Natural pine, faux fur, and soho vibes</div>
+            </div>
+          </div>
+
+          <!-- Solarized Light -->
+          <div class="theme-card">
+            <div class="theme-preview" style="background:#fdf6e3; color:#002b36;">
+              <div class="theme-preview-line" style="color:#d33682;">fn <span style="color:#268bd2;">main</span>() {
+              </div>
+              <div class="theme-preview-line">&nbsp;&nbsp;<span style="color:#859900;">println!</span>(<span
+                  style="color:#2aa198;">"hello"</span>);</div>
+              <div class="theme-preview-line">}</div>
+            </div>
+            <div class="theme-swatches">
+              <div class="swatch" style="background:#dc322f;"></div>
+              <div class="swatch" style="background:#859900;"></div>
+              <div class="swatch" style="background:#b58900;"></div>
+              <div class="swatch" style="background:#268bd2;"></div>
+              <div class="swatch" style="background:#d33682;"></div>
+              <div class="swatch" style="background:#2aa198;"></div>
+            </div>
+            <div class="theme-meta" style="background:#fdf6e3; color:#002b36;">
+              <span class="theme-badge" style="color:#2aa198; border-color:#2aa198;">light</span>
+              <div class="theme-name">Solarized Light</div>
+              <div class="theme-desc">Precision colors for machines and people</div>
+            </div>
+          </div>
+
+          <!-- Tokyo Night -->
+          <div class="theme-card">
+            <div class="theme-preview" style="background:#1a1b26; color:#c0caf5;">
+              <div class="theme-preview-line" style="color:#bb9af7;">fn <span style="color:#7aa2f7;">main</span>() {
+              </div>
+              <div class="theme-preview-line">&nbsp;&nbsp;<span style="color:#9ece6a;">println!</span>(<span
+                  style="color:#e0af68;">"hello"</span>);</div>
+              <div class="theme-preview-line">}</div>
+            </div>
+            <div class="theme-swatches">
+              <div class="swatch" style="background:#f7768e;"></div>
+              <div class="swatch" style="background:#9ece6a;"></div>
+              <div class="swatch" style="background:#e0af68;"></div>
+              <div class="swatch" style="background:#7aa2f7;"></div>
+              <div class="swatch" style="background:#bb9af7;"></div>
+              <div class="swatch" style="background:#7dcfff;"></div>
+            </div>
+            <div class="theme-meta" style="background:#1a1b26; color:#c0caf5;">
+              <span class="theme-badge" style="color:#7aa2f7; border-color:#7aa2f7;">dark</span>
+              <div class="theme-name">Tokyo Night</div>
+              <div class="theme-desc">City lights of Tokyo at night</div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+    </div><!-- /container -->
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>
+        <a href="https://github.com/carmiac/tca-themes">tca-themes</a> ·
+        <a href="https://github.com/carmiac/tca-rust">tca-rust</a> ·
+        <a href="https://github.com/carmiac/tca-go">tca-go</a> ·
+        <a href="https://github.com/carmiac/tca-python">tca-python</a> ·
+        <a href="https://github.com/carmiac/tca-themes/blob/main/SPECIFICATION.md">Specification</a>
+      </p>
+      <p style="margin-top: 8px;">MIT License</p>
+    </div>
+  </footer>
+
+</body>
+
+</html>

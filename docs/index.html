@@ -33,18 +33,72 @@
   </header>
 
   <main>
-    <section class="section">
-      <div class="section-label">Who is This For?</div>
-      <h2>Application Developers, Theme Developers, and End Users</h2>
-      <p class="section-intro">
-        Let's make color themes easier to use for everyone.
-      </p>
-      <div class="cards">
-        <div class="card">
-          <div class="card-icon">💻</div>
-          <h3>Application Developers</h3>
-          <p>Easily integrate color themes into your terminal application with library support for Python/Textual,
-            Rust/Ratatui, and Go/Lipgloss support.</p>
+    <div class="container">
+      <section class="section">
+        <div class="section-label">Who is This For?</div>
+        <h2>Application Developers, Theme Developers, and End Users</h2>
+        <p class="section-intro">
+          Let's make color themes easier to use for everyone.
+        </p>
+        <div class="cards">
+          <div class="card">
+            <div class="card-icon">💻</div>
+            <h3>Application Developers</h3>
+            <p>Easily integrate color themes into your terminal application with library support for Python/Textual,
+              Rust/Ratatui, and Go/Lipgloss support.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon">🎨</div>
+            <h3>Theme Developers</h3>
+            <p>Create your theme your way with clear, simple guardrails to help your theme be used the right way.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon">🛼</div>
+            <h3>Theme Users</h3>
+            <p>Install a theme file once, and then every TCA-aware application can use it. Export to Base16/24 for an
+              expanded ecosystem of tools.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-label">Current Status</div>
+        <h2>DRAFT</h2>
+        <p class="section-intro">
+          TCA is currently a draft in review, but already supports most basic features including language libraries,
+          theme
+          validators, and import/export.</p>
+      </section>
+
+      <!-- ── Ecosystem ─────────────────────────────────────────── -->
+      <section class="section">
+        <div class="section-label">Ecosystem</div>
+        <h2>Libraries &amp; Tools</h2>
+        <p class="section-intro">
+          TCA themes work across languages and frameworks. Pick the library for your stack.
+        </p>
+        <div class="cards">
+          <div class="card">
+            <div class="card-icon">🎨</div>
+            <h3><a href="https://github.com/carmiac/tca-themes">tca-themes</a></h3>
+            <p>Ready-to-use theme collection and the canonical JSON schema for validation.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon">🦀</div>
+            <h3><a href="https://github.com/carmiac/tca-rust">tca-rust</a></h3>
+            <p>Core Rust crates: CLI tool, type definitions, theme loader, and Ratatui widgets for colorful terminal
+              applications.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon">🐹</div>
+            <h3><a href="https://github.com/carmiac/tca-go">tca-go</a></h3>
+            <p>Go library with Lipgloss integration for colorful terminal applications.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon">🐍</div>
+            <h3><a href="https://github.com/carmiac/tca-python">tca-python</a></h3>
+            <p>Python library with Textual integration for colorful terminal applications.</p>
+          </div>
         </div>
         <div class="card">
           <div class="card-icon">🎨</div>
@@ -118,55 +172,8 @@
             <span class="prompt">$</span> tca list
           </pre>
         </div>
-
-        <div class="qs-block">
-          <h3>Export</h3>
-          <pre><span class="prompt">$</span> tca export dracula kitty
-            <span class="prompt">$</span> tca export nord-dark alacritty \
-            --output ~/.config/alacritty/colors.toml
-            <span class="prompt">$</span> tca export solarized-light tmux
-            <span class="prompt">$</span> tca export one-dark vscode
-          </pre>
-        </div>
-
-        <div class="qs-block">
-          <h3>Rust</h3>
-          <pre><span class="comment"># Cargo.toml</span>
-            tca-loader = "0.1"
-            tca-types = "0.1"
-            tca-ratatui = "0.1"</pre>
-        </div>
-
-        <div class="qs-block">
-          <h3>Go</h3>
-          <pre><span class="prompt">$</span> go get github.com/carmiac/tca-go</pre>
-        </div>
-
-        <div class="qs-block">
-          <h3>Python</h3>
-          <pre><span class="prompt">$</span> pip install tca-python
-
-            <span class="comment"># With Textual support</span>
-            <span class="prompt">$</span> pip install "tca-python[textual]"
-          </pre>
-        </div>
-      </div>
-
-      <br>
-      <p class="section-intro" style="margin-bottom: 16px;">Supported export formats:</p>
-      <div class="format-grid">
-        <div class="format-item">kitty<span>Kitty terminal</span></div>
-        <div class="format-item">alacritty<span>Alacritty terminal</span></div>
-        <div class="format-item">iterm2<span>iTerm2 preset</span></div>
-        <div class="format-item">tmux<span>tmux config</span></div>
-        <div class="format-item">vim<span>Vim colorscheme</span></div>
-        <div class="format-item">helix<span>Helix editor</span></div>
-        <div class="format-item">vscode<span>VS Code theme</span></div>
-        <div class="format-item">base16<span>Base16 YAML</span></div>
-        <div class="format-item">starship<span>Starship prompt</span></div>
-      </div>
-    </section>
-
+      </section>
+    </div>
   </main>
 
   <footer>

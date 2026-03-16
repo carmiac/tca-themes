@@ -32,7 +32,7 @@ bright_white = "#fdf6e3"
 neutral = [
   "ansi.black",
   "ansi.bright_black",
-  "#93a1a1",
+  "#739191",
   "ansi.white",
   "ansi.bright_white",
 ]

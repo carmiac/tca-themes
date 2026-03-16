@@ -92,7 +92,7 @@ muted = "palette.neutral.3"
 
 [ui.cursor]
 primary = "palette.mauve.2"
-muted = "palette.neutral.4"
+muted = "palette.neutral.5"
 
 [ui.selection]
 bg = "palette.neutral.3"

@@ -73,7 +73,7 @@ highlight = "palette.yellow.2"
 link = "palette.blue.2"
 
 [ui.bg]
-primary = "palette.neutral.1"
+primary = "palette.neutral.0"
 secondary = "palette.neutral.2"
 
 [ui.fg]
@@ -82,7 +82,7 @@ secondary = "palette.neutral.5"
 muted = "ansi.bright_black"
 
 [ui.border]
-primary = "palette.neutral.4"
+primary = "palette.neutral.5"
 muted = "palette.neutral.3"
 
 [ui.cursor]

@@ -1,16 +1,16 @@
 # Terminal Colors Architecture (TCA) Specification
 
-**Version:** 1.0.0  
+**Version:** 0.2.0  
 **Status:** Draft
 
 ## Overview
 
-Terminal Colors Architecture (TCA) is a specification for defining terminal application color themes in a structured, portable format for use by developers and theme authors. TCA themes are defined in TOML and can be used across multiple terminal applications, UI frameworks, and color schemes.
+Terminal Colors Architecture (TCA) is a specification for defining terminal application color themes in a structured, portable format for use by developers and theme authors. TCA themes are defined in TOML and may be used across multiple terminal applications, UI frameworks, and color schemes.
 
 ## Goals
 
 1. **Portability** - Single theme file works across terminals, editors, and frameworks
-2. **Interoperability** - Structured ANSI, Base16, semantic, and UI naming scheme allows for easy library integration
+2. **Interoperability** - Structured ANSI, Base16/24, semantic, and UI naming scheme allows for easy library integration
 3. **Consistency** - Structured approach to semantic color naming
 4. **Accessibility** - Built-in contrast validation and WCAG compliance
 5. **Flexibility** - Supports both simple and complex color schemes
@@ -26,13 +26,15 @@ TCA themes are defined in TOML (`.toml` extension).
 A TCA theme consists of six sections:
 
 ```toml
-[theme]    # Theme metadata (required)
+[theme]    # Theme metadata          (required)
 [ansi]     # 16 ANSI terminal colors (required)
-[palette]  # Color ramps (optional)
-[base16]   # Base16 compatibility (optional)
-[semantic] # Semantic color names (required)
-[ui]       # UI element colors (required)
+[palette]  # Color ramps             (optional)
+[base16]   # Base16/24 compatibility (optional)
+[semantic] # Semantic color names    (required)
+[ui]       # UI element colors       (required)
 ```
+
+Sections must appear in this order in the file. Each section may reference colors defined in any earlier section.
 
 ---
 
@@ -40,7 +42,7 @@ A TCA theme consists of six sections:
 
 **Required**
 
-Theme metadata for identification and attribution.
+All themes must include a metadata section for identification and attribution.
 
 ### Fields
 
@@ -71,7 +73,7 @@ dark = true
 
 **Required**
 
-Defines the 16 standard ANSI terminal colors.
+All themes must define the 16 standard ANSI terminal colors.
 
 ### Fields
 
@@ -116,7 +118,7 @@ bright_white   = "#ffffff"
 
 **Optional**
 
-The palette is used to define other colors that may be used elsewhere in the theme using color ramps. Colors in the palette may be defined by either hex strings or references to colors from the ANSI section. Color ramps should scale from darkest to lightest.
+The palette is used to define other colors that may be used elsewhere in the theme using color ramps. Colors in the palette may be defined by either hex strings or references to colors from the ANSI section. Color ramps must scale from darkest to lightest.
 
 ### Structure
 
@@ -143,8 +145,8 @@ red = ["#3b1e1e", "#bf616a", "#d08770"]
    - Avoid generic names: `vibrant`, `accent`, `custom`
 
 3. Ramp Ordering:
-   - Within each ramp, earlier colors should be darker
-   - Higher indexes should be lighter
+   - Within each ramp, earlier colors must be darker
+   - Higher indexes must be lighter
 
 4. Ramp Indexing:
    - Arrays are 0-indexed: the first element is index `0`
@@ -152,19 +154,19 @@ red = ["#3b1e1e", "#bf616a", "#d08770"]
 
 ---
 
-## 4. Base16 Section
+## 4. Base16/24 Section
 
 **Recommended**
 
-Base16 color mapping for compatibility with Base16 color ecosystem.
+Base16/24 color mapping for compatibility with Base16 color ecosystem.
 
 ### Fields
 
-16 fields from `base00` through `base0F`, all optional.
+16 or 24 fields from `base00` through `base17`, all optional.
 
 ### Value Format
 
-May be a direct hex string, or a reference to ansi or palette colors.
+May be a direct hex string, or a reference to ANSI or palette colors.
 
 ### Example
 
@@ -209,7 +211,7 @@ Semantic colors provide meaningful color names for common use cases.
 
 ### Value Format
 
-May be a direct hex string, or a reference to ansi, base16, or palette colors.
+May be a direct hex string, or a reference to ANSI, base16, or palette colors.
 
 ### Example
 
@@ -292,6 +294,37 @@ fg = "ansi.bright_white"
 
 ---
 
+## File Location and User Configuration
+
+In order to facilitate theme sharing between applications, per-user theme and preference files must be located in common directories. TCA respects the [XDG Directory Specification](https://specifications.freedesktop.org/basedir/latest/).
+
+### Theme File Location
+
+TCA themes must be installed into `$XDG_DATA_HOME/tca/themes/` (default: `~/.local/share/tca/themes/`).
+
+### User Preferences File
+
+User preferences must be stored in a TOML file at $XDG_CONFIG_HOME/tca/tca.toml with the following structure:
+
+```toml
+[tca]
+default_theme = "user-default-theme"
+default_dark_theme = "user-default-dark-theme"
+default_light_theme = "user-default-light-theme"
+```
+
+All entries are optional. Fallback precedence should be:
+
+1. Individual application preferences.
+2. `default_dark_theme` if defined and terminal is in dark mode.
+3. `default_light_theme` if defined and terminal is in light mode.
+4. `default_theme` if the other preferences are not defined or terminal mode is unavailable.
+5. Any defined theme if the others are not defined.
+
+If no themes are defined or the user preference file is missing, any theme may be used.
+
+---
+
 ## Validation Rules
 
 TCA themes must pass the following validation checks:
@@ -299,12 +332,12 @@ TCA themes must pass the following validation checks:
 ### 1. Structure Validation
 
 - Valid TOML syntax
-- Required sections present (theme, ansi, ui, semantic)
+- Required sections present (theme, ANSI, ui, semantic)
 - All required fields present
 
 ### 2. Reference Validation
 
-- No references in ansi section
+- No references in ANSI section
 - References only refer to prior sections
 - All referenced colors exist
 
@@ -316,7 +349,7 @@ For accessibility the following minimum contrast ratios are recommended:
 | --------------------------- | ----------- | ------- | ----- |
 | fg.primary / bg.\*          | > 4.5       | < 3.5   | < 3.0 |
 | fg.muted / bg.\*            | > 3.0       | < 2.5   | < 2.0 |
-| semantic.\* / bg.\*         | > 4.5       | < 2.5   | < 2.0 |
+| semantic.\* / bg.\*         | > 4.5       | < 3.5   | < 3.0 |
 | selection.fg / selection.bg | > 3.0       | < 2.5   | < 2.0 |
 | border.\* / bg.\*           | > 3.0       | < 2.5   | < 2.0 |
 | cursor.primary / bg.\*      | > 4.5       | < 3.5   | < 3.0 |
@@ -413,18 +446,18 @@ fg = "palette.neutral.4"
 
 ## Design Principles
 
-### 1. Semantic Over Literal
+### 1. Semantic over Literal
 
 Use semantic names (error, success) rather than literal names (red, green) in application code. This allows theme authors flexibility in color choices.
 
 ### 2. Practical Accessibility Matters
 
-Themes should meet WCAG AA standards:
+Themes should meet [WCAG 2.0 AA](https://www.w3.org/WAI/standards-guidelines/wcag/) standards:
 
 - 4.5:1 contrast ratio for normal text
 - 3:1 for large text
 
-However many popular existing themes do not, so the recommendations are somewhat relaxed.
+However many popular existing themes do not, so the requirements are somewhat relaxed.
 
 ### 3. Framework Agnostic
 
@@ -438,6 +471,8 @@ TCA themes can be exported to any format:
 ---
 
 ## Tooling
+
+A reference validation and export tool is provided, as are implementations for several languages and frameworks.
 
 ### Validation
 
@@ -453,29 +488,19 @@ tca export theme.toml alacritty
 tca export theme.toml vim
 ```
 
-### Loading
-
-Themes can be loaded from:
-
-1. Explicit filepath
-2. Shared themes directory (`$XDG_DATA_HOME/tca/themes`)
-3. Current directory
-
 ### CLI/TUI Frameworks
 
 Reference implementations are provided for Rust, Go, and Python. Libraries are provided for integrating into the Ratatui, Lipgloss, and Textual frameworks.
 
 ---
 
-## Versioning
+## Standards Compliance
 
-This specification follows semantic versioning:
+This specification follows the following standards:
 
-- **Major version** - Breaking changes to theme format
-- **Minor version** - New optional fields or features
-- **Patch version** - Clarifications and fixes
-
----
+- [Semantic Versioning 2.0](https://semver.org)
+- [RFC 2119](https://soundcloud.com/ericwbailey/rfc-2119)
+- [XDG Directory Specification](https://specifications.freedesktop.org/basedir/latest/)
 
 ## References
 

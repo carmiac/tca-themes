@@ -29,7 +29,7 @@ bright_white = "#ffffff"
 neutral = [
   "ansi.black",
   "#282a36",
-  "#44475a",
+  "#64677a",
   "ansi.bright_black",
   "ansi.white",
 ]
@@ -78,8 +78,8 @@ primary = "palette.purple.0"
 muted = "palette.neutral.1"
 
 [ui.cursor]
-primary = "palette.neutral.3"
-muted = "palette.neutral.2"
+primary = "palette.neutral.4"
+muted = "palette.neutral.3"
 
 [ui.selection]
 bg = "palette.neutral.1"

@@ -12,3 +12,12 @@ Thumbs.db
 # Temp files
 *.tmp
 *.bak
+
+# Jekyll local dev
+docs/_site/
+docs/.jekyll-cache/
+docs/_config.local.yml
+docs/Gemfile.lock
+
+# Assorted LSPs
+/.harper-dictionary.txt

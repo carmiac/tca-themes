@@ -1,10 +1,6 @@
 name: Validate Themes
 
 on:
-  push:
-    paths:
-      - "themes/**"
-      - ".github/workflows/validate.yml"
   pull_request:
     paths:
       - "themes/**"
@@ -33,14 +29,14 @@ jobs:
             cargo-tca-${{ runner.os }}-
 
       - name: Install tca
-        run: cargo install tca
+        run: cargo install --force tca-cli
 
       - name: Validate all themes
         run: |
           failed=0
           for f in themes/*.toml; do
             echo "Validating $f ..."
-            if ! tca validate "$f"; then
+            if ! tca validate "$f" schema/tca.schema.pragmatic.json; then
               echo "FAIL: $f"
               failed=$((failed + 1))
             fi

@@ -1,10 +1,6 @@
 name: Validate Themes
 
 on:
-  push:
-    paths:
-      - "themes/**"
-      - ".github/workflows/validate.yml"
   pull_request:
     paths:
       - "themes/**"

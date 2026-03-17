@@ -9,3 +9,5 @@ theme: null
 exclude:
   - "*.toml"
   - schema/
+  - Gemfile
+  - Gemfile.lock

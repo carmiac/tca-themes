@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ site.title }}</title>
+  <meta name="description" content="{{ site.description }}">
+  <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
+</head>
+
+<body>
+
+  <header class="hero">
+    <div class="container">
+      <div class="hero-eyebrow">{{ page.hero.eyebrow }}</div>
+      <h1>{{ page.hero.title }}<br><span>{{ page.hero.title_accent }}</span></h1>
+      <p class="hero-tagline">{{ page.hero.tagline }}</p>
+      <div class="hero-install">{{ page.hero.install }}</div>
+      <div class="hero-links">
+        {% for link in page.hero.links %}
+        <a href="{{ link.url }}">{{ link.text }}</a>
+        {% endfor %}
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+
+      <section class="section">
+        <div class="section-label">{{ page.audience.label }}</div>
+        <h2>{{ page.audience.heading }}</h2>
+        <p class="section-intro">{{ page.audience.intro }}</p>
+        <div class="cards">
+          {% for card in page.audience.cards %}
+          <div class="card">
+            <div class="card-icon">{{ card.icon }}</div>
+            <h3>{{ card.title }}</h3>
+            <p>{{ card.body }}</p>
+          </div>
+          {% endfor %}
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-label">{{ page.ecosystem.label }}</div>
+        <h2>{{ page.ecosystem.heading }}</h2>
+        <p class="section-intro">{{ page.ecosystem.intro }}</p>
+        <div class="cards">
+          {% for card in page.ecosystem.cards %}
+          <div class="card">
+            <div class="card-icon">{{ card.icon }}</div>
+            <h3>{% if card.url %}<a href="{{ card.url }}">{{ card.title }}</a>{% else %}{{ card.title }}{% endif %}</h3>
+            <p>{{ card.body }}</p>
+          </div>
+          {% endfor %}
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-label">{{ page.quickstart.label }}</div>
+        <h2>{{ page.quickstart.heading }}</h2>
+        <p class="section-intro">{{ page.quickstart.intro }}</p>
+        <div class="quickstart-grid">
+          {% for block in page.quickstart.blocks %}
+          <div class="qs-block">
+            <h3>{{ block.title }}</h3>
+            <pre>{{ block.content }}</pre>
+          </div>
+          {% endfor %}
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-label">{{ page.current_state.label }}</div>
+        <h2>{{ page.current_state.heading }}</h2>
+        <p class="section-intro">{{ page.current_state.body }}</p>
+        {% if page.current_state.roadmap %}
+        <ul>
+          {% for item in page.current_state.roadmap %}
+          <li>{{ item }}</li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+      </section>
+
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>
+        {% for link in page.footer.links %}{% unless forloop.first %} · {% endunless %}<a href="{{ link.url }}">{{ link.text }}</a>{% endfor %}
+      </p>
+      <p style="margin-top: 8px;">{{ page.footer.license }}</p>
+    </div>
+  </footer>
+
+</body>
+
+</html>

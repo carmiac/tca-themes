@@ -29,7 +29,7 @@ jobs:
             cargo-tca-${{ runner.os }}-
 
       - name: Install tca
-        run: cargo install tca-cli
+        run: cargo install --force tca-cli
 
       - name: Validate all themes
         run: |

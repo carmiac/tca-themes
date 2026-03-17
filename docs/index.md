@@ -87,7 +87,7 @@ quickstart:
         tca-ratatui = "0.3"
 
         <span class="comment">// main.rs</span>
-        let theme = TcaTheme::new(None);
+        let theme = TcaTheme::default();
         let style = Style::default()
             .fg(theme.ui.fg_primary)
             .bg(theme.ui.bg_primary);

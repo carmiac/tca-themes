@@ -1,6 +1,5 @@
 [theme]
 name = "One Dark"
-slug = "one-dark"
 author = "Atom / TCA Project"
 version = "1.0.0"
 description = "Dark theme inspired by Atom's One Dark UI. Clean syntax colors on a comfortable dark background."

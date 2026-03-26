@@ -1,6 +1,5 @@
 [theme]
 name = "Gruvbox Dark"
-slug = "gruvbox-dark"
 author = "morhetz / TCA Project"
 version = "1.0.0"
 description = "Retro groove dark theme with warm, earthy tones. Based on gruvbox by morhetz."

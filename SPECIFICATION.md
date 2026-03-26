@@ -1,6 +1,6 @@
 # Terminal Colors Architecture (TCA) Specification
 
-**Version:** 0.2.0  
+**Version:** 0.3.0  
 **Status:** Draft
 
 ## Overview
@@ -46,21 +46,21 @@ All themes must include a metadata section for identification and attribution.
 
 ### Fields
 
-| Field | Type | Required | Description |
-| --- | --- | --- | --- |
-| `name` | string | Yes | Human-readable theme name |
-| `slug` | string | No | URL-safe identifier (should match filename) |
-| `author` | string | No | Theme author name or organization |
-| `version` | string | No | Theme version (semver recommended) |
-| `description` | string | No | Brief description of the theme |
-| `dark` | bool | No | Is the theme a dark mode theme |
+| Field         | Type   | Required | Description                         |
+| ------------- | ------ | -------- | ----------------------------------- |
+| `name`        | string | Yes      | Human-readable theme name           |
+| `author`      | string | No       | Theme author name or organization   |
+| `version`     | string | No       | Theme version (semver recommended)  |
+| `description` | string | No       | Brief description of the theme      |
+| `dark`        | bool   | No       | True if the theme a dark mode theme |
+
+If the `dark` field is absent libraries should determine if a theme is dark or light using the ui.bg.primary / ui.fg.primary luminance ratio.
 
 ### Example
 
 ```toml
 [theme]
 name = "Nord Dark"
-slug = "nord-dark"
 author = "Arctic Ice Studio"
 version = "1.0.0"
 description = "An arctic, north-bluish color palette"
@@ -118,7 +118,7 @@ bright_white   = "#ffffff"
 
 **Optional**
 
-The palette is used to define other colors that may be used elsewhere in the theme using color ramps. Colors in the palette may be defined by either hex strings or references to colors from the ANSI section. Color ramps must scale from darkest to lightest.
+The palette is used to define other colors that may be used elsewhere in the theme using color ramps. Colors in the palette may be defined by either hex strings or references to colors from the ANSI section. Color ramp entries must be single hue lightness ramps that scale from darkest to lightest.
 
 ### Structure
 
@@ -189,6 +189,8 @@ base0D = "ansi.blue"
 base0E = "ansi.magenta"
 base0F = "ansi.bright_red"
 ```
+
+Implementations may expose semantic aliases for Base16 slots (e.g. keyword for base0E, string for base0B) as a library convenience. These aliases are not part of the TCA theme format and should not appear in theme files.
 
 ---
 
@@ -323,6 +325,10 @@ All entries are optional. Fallback precedence should be:
 
 If no themes are defined or the user preference file is missing, any theme may be used.
 
+### Platform Notes
+
+Non-XDG compliant platforms (e.g. Windows) should follow platform conventions. Use of a standard cross-platform directory library is recommended.
+
 ---
 
 ## Validation Rules
@@ -362,7 +368,6 @@ For accessibility the following minimum contrast ratios are recommended:
 ```toml
 [theme]
 name = "Example Theme"
-slug = "example-theme"
 author = "Theme Author"
 version = "1.0.0"
 description = "An example TCA theme"

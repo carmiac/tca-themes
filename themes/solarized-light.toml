@@ -1,6 +1,5 @@
 [theme]
 name = "Solarized Light"
-slug = "solarized-light"
 author = "TCA Project"
 version = "1.0.0"
 dark = false

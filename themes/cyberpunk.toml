@@ -1,6 +1,5 @@
 [theme]
 name = "Cyberpunk"
-slug = "cyberpunk"
 version = "1.0.0"
 description = "High-contrast neon dark theme inspired by cyberpunk aesthetics."
 dark = true

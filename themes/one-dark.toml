@@ -76,8 +76,8 @@ primary = "palette.neutral.0"
 secondary = "palette.neutral.2"
 
 [ui.fg]
-primary = "palette.neutral.6"
-secondary = "palette.neutral.5"
+primary = "palette.neutral.7"
+secondary = "palette.neutral.6"
 muted = "ansi.bright_black"
 
 [ui.border]

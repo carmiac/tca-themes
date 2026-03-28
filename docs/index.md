@@ -6,7 +6,7 @@ hero:
   title: "Your theme."
   title_accent: "Every terminal. Every CLI. Every TUI."
   tagline: >
-    TCA is a structured, portable format for terminal and CLI/TUI color themes. Define your palette once in TOML then export to any terminal, editor, or UI framework.
+    TCA is a structured, portable format for terminal and CLI/TUI color themes. Define your theme once as a base24 YAML file then use it everywhere.
 
 
   install: "cargo install tca-cli"
@@ -26,19 +26,19 @@ audience:
     - icon: "💻"
       title: "Application Developers"
       body: >
-        One line of code, zero configuration. Your app immediately supports built-in themes and any theme your users install with no config parsers to write, no theme files to ship. Sane fallbacks and defaults are included in the reference libraries.
+        One line of code, zero configuration. Your app immediately supports built-in themes and any theme your users install. No config parsers to write, no theme files to ship, no hardcoded colors. Use semantic names like error, fg_primary, and border_primary. They stay stable across every theme.
 
 
     - icon: "🎨"
       title: "Theme Authors"
       body: >
-        Write one .toml file and reach every TCA-powered app across Rust, Python, and Go. Built-in validation catches contrast issues and broken color references before you ship.
+        Write one base24 YAML file and reach every TCA-powered app across Rust, Python, and Go. Built-in validation catches contrast issues and file issues before you ship.
 
 
     - icon: "🛼"
       title: "Theme Users"
       body: >
-        Drop any .toml file into ~/.local/share/tca/themes/ and every TCA-powered app on your system can use it with no per-app configuration needed. Set your preferred theme once, not every time.
+        Drop any base24 YAML file into ~/.local/share/tca/themes/ and every TCA-powered app on your system can use it with no per-app configuration needed. Or download them all with a single command. Set your preferred theme once, not every time.
 
 
 ecosystem:
@@ -49,7 +49,7 @@ ecosystem:
     - icon: "🎨"
       title: "tca-themes"
       url: "https://github.com/carmiac/tca-themes"
-      body: "Ready-to-use theme collection and the canonical JSON schema for validation."
+      body: "Canonical theme specification."
     - icon: "🦀"
       title: "tca-rust"
       url: "https://github.com/carmiac/tca-rust"
@@ -66,43 +66,62 @@ ecosystem:
 quickstart:
   label: "Quick Start"
   heading: "Get Going Fast"
-  intro: "Install the CLI, validate a theme, and export to your terminal in under a minute."
+  intro: "Add a theme, set your default, and integrate into your app in minutes."
   blocks:
     - title: "CLI"
       content: |
         <span class="comment"># Install</span>
         <span class="prompt">$</span> cargo install tca-cli
 
-        <span class="comment"># Validate a theme</span>
-        <span class="prompt">$</span> tca validate dracula
+        <span class="comment"># Add a theme and set it as default</span>
+        <span class="prompt">$</span> tca add "Tokyo Night"
+        <span class="prompt">$</span> tca config set default "Tokyo Night"
 
-        <span class="comment"># List installed themes</span>
+        <span class="comment"># Add all the themes</span>
+        <span class="prompt">$</span> tca add --all
+
+        <span class="comment"># List available themes</span>
         <span class="prompt">$</span> tca list
 
-        <span class="comment"># Export to your terminal</span>
-        <span class="prompt">$</span> tca export nord-dark -f kitty -o ~/.config/kitty/theme.conf
+        <span class="comment"># Validate a theme file</span>
+        <span class="prompt">$</span> tca validate nord-dark.yaml
     - title: "Rust"
       content: |
-        <span class="comment"># Cargo.toml</span>
-        tca-ratatui = "0.3"
+        <span class="comment">// Cargo.toml: tca-ratatui = "0.3"</span>
 
-        <span class="comment">// main.rs</span>
+        <span class="comment">// Loads user preference, falls back to built-in</span>
         let theme = TcaTheme::default();
+
+        <span class="comment">// Load a theme by name, falls back to built-in</span>
+        let theme = TcaTheme::new(Some("tokyo night");
+
+        <span class="comment">// Get a cursor to move through all installed themes.
+        let cursor = TcaThemeCursor::with_all_themes();
+
+        <span class="comment">// Semantic names — stable across all themes</span>
         let style = Style::default()
             .fg(theme.ui.fg_primary)
             .bg(theme.ui.bg_primary);
+        let error  = Style::default().fg(theme.semantic.error);
+        let border = Style::default().fg(theme.ui.border_primary);
+    - title: "Go / Python"
+      content: |
+        <span class="comment">// Go + Lipgloss</span>
+        theme := tca.NewTheme(nil)
+        style := lipgloss.NewStyle().
+            Foreground(theme.UI.FgPrimary).
+            Background(theme.UI.BgPrimary)
+
+        <span class="comment"># Python + Textual</span>
+        theme = TcaTheme()
+        error_color = theme.semantic.error
 
 current_state:
   label: "Current State"
   heading: "Draft — Public Input Welcome"
   body: >
-    TCA is a draft specification under active development. Core features are working: language libraries, theme validation, and import/export. We are seeking feedback before finalising the v1.0 specification.
+    TCA is a draft specification under active development. Core features are working: language libraries, theme validation, and import/export. I am seeking feedback before finalising the v1.0 specification.
 
-
-  roadmap:
-    - "Expanded tca tools for import, export, and automatic theme downloads"
-    - "Per-user theme preference library support"
-    - "More themes"
 
 footer:
   links:

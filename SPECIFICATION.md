@@ -16,7 +16,7 @@ Terminal Colors Architecture (TCA) is a specification for defining terminal appl
 
 ## File Format
 
-TCA themes are base24 themes as defined by the [Tinted Theming Base24](https://github.com/tinted-theming/base24/) project. These files are a minimal subset of YAML.
+TCA themes are base24 YAML files following the [Tinted Theming base24 schema](https://github.com/tinted-theming/base24/).
 
 **File naming convention:** `kebab-case.yaml` (e.g., `nord-dark.yaml`, `solarized-light.yaml`)
 
@@ -57,7 +57,7 @@ Non-XDG compliant platforms (e.g. Windows) should follow platform conventions. U
 
 ## Semantic Mapping
 
-TCA maps the base24 base names and metadata to a structured set of names for library and application code. Each section has a set of fields that may be referenced as `section.field` e.g. `meta.name` or `ui.fg_primary`. Libraries should implement access to sections and fields an idiomatic way for the language.
+TCA maps base24 fields to a structured set of names for library and application code. The tables below use dot notation (`section.field`) to identify fields. Library code should use idiomatic naming for the target language — for example, `meta.name` in spec notation maps to `theme.meta.name` in code, and `ui.fg.primary` maps to `theme.ui.fg_primary`.
 
 | Section  | Description                 |
 | -------- | --------------------------- |
@@ -68,10 +68,11 @@ TCA maps the base24 base names and metadata to a structured set of names for lib
 
 ### Metadata Fields
 
-| Field    | Base24 Map | Description                       |
-| -------- | ---------- | --------------------------------- |
-| `name`   | `name`     | Human-readable theme name         |
-| `author` | `author`   | Theme author name or organization |
+| Field    | Base24 Map | Description                            |
+| -------- | ---------- | -------------------------------------- |
+| `name`   | `name`     | Human-readable theme name              |
+| `author` | `author`   | Theme author name or organization      |
+| `dark`   | `variant`  | `true` if variant is `dark`, else `false` |
 
 ### ANSI Fields
 
@@ -139,7 +140,7 @@ A TCA library must satisfy the following requirements.
 
 1. A library MUST expose all fields defined in the semantic mapping tables under their canonical names.
 2. A library MUST expose colors in the native color type of its target framework or language.
-3. A library MUST derive dark from the luminance of ui.bg.primary if not determinable from the environment.
+3. A library MUST expose `meta.dark` as a bool derived from the base24 `variant` field (`true` if variant is `dark`, `false` otherwise). When dark/light mode context is needed and the environment does not provide it, `meta.dark` should be used.
 
 ### API
 
